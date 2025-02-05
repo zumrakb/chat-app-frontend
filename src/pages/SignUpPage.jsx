@@ -12,7 +12,7 @@ import {
 import { Link } from "react-router-dom";
 
 import AuthImagePattern from "../components/AuthImagePattern";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,26 +22,53 @@ const SignUpPage = () => {
     password: "",
   });
 
-  const { signup, isSigningUp } = useAuthStore();
+  const { signUp, isSigningUp } = useAuthStore();
 
   const validateForm = () => {
-    if (!formData.fullName.trim()) return toast.error("Full name is required");
-    if (!formData.email.trim()) return toast.error("Email is required");
-    if (!/\S+@\S+\.\S+/.test(formData.email))
-      return toast.error("Invalid email format");
-    if (!formData.password) return toast.error("Password is required");
-    if (formData.password.length < 6)
-      return toast.error("Password must be at least 6 characters");
+    if (!formData.fullName.trim()) {
+      toast.error("Full name is required");
+      console.log("Validation failed: Full name is empty");
+      return false;
+    }
+    if (!formData.email.trim()) {
+      toast.error("Email is required");
+      console.log("Validation failed: Email is empty");
+      return false;
+    }
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      toast.error("Invalid email format");
+      console.log("Validation failed: Invalid email format");
+      return false;
+    }
+    if (!formData.password) {
+      toast.error("Password is required");
+      console.log("Validation failed: Password is empty");
+      return false;
+    }
+    if (formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      console.log("Validation failed: Password too short");
+      return false;
+    }
 
+    console.log("Validation passed ✅");
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Create account button clicked"); // Logs click event
 
     const success = validateForm();
+    console.log("Form data ??", formData);
+    console.log("Success ??", success);
 
-    if (success === true) signup(formData);
+    if (success === true) {
+      console.log("✅ I'm in the if block!");
+      await signUp(formData); // Assuming signUp is your API call
+    } else {
+      console.log("❌ Did not enter if block due to failed validation.");
+    }
   };
 
   return (

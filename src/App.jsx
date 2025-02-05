@@ -8,6 +8,7 @@ import SettingsPage from "./pages/SettingsPage";
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
@@ -16,17 +17,16 @@ function App() {
     checkAuth();
   }, [checkAuth]);
 
-  console.log({ authUser });
-
   if (isCheckingAuth && !authUser)
     return (
       <div className="flex justify-center items-center h-screen">
-        <Loader className="size-10 animate-spin " />
+        <Loader className="size-10 animate-spin" />
       </div>
     );
 
   return (
     <div>
+      <Toaster position="top-center" />
       <Navbar />
       <Routes>
         <Route
