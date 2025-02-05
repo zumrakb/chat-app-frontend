@@ -5,9 +5,11 @@ import SignUpPage from "./pages/SignUpPage";
 import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import SettingsPage from "./pages/SettingsPage";
+import { useAuthStore } from "./store/useAuthStore";
 function App() {
+  const { authUser } = useAuthStore();
   return (
-    <div className="">
+    <div>
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
